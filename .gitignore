@@ -58,3 +58,22 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Custom
+.idea
+.vscode
+node_modules
+/Assets/Animations
+/Assets/Images
+/Assets/Models
+/Assets/Prefabs
+/Assets/Resources
+/Assets/Sounds
+/Assets/Scenes
+/Assets/Animations.meta
+/Assets/Images.meta
+/Assets/Models.meta
+/Assets/Prefabs.meta
+/Assets/Resources.meta
+/Assets/Sounds.meta
+/Assets/Scenes.meta
+BuildLogs
