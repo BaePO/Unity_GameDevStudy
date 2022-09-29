@@ -23,8 +23,15 @@ public class FollowCam : MonoBehaviour
     // 카메라 LookAt의 Offset 값 : 오프셋 변수와 LookAt 함수 조정
     public float targetOffset = 2.0f;
 
+    // Lerp를 잘 사용하기 위한 방법
+    public Transform startPosition;
+    public Transform endPosition;
+
     // SmoothDamp에서 사용할 변수 -> SmoothDamp는 주로 Follw Cam에 사용된다.
     private Vector3 veloctiy = Vector3.zero;
+
+    float lerpTime = 0.5f;
+    float currentTime = 0;
 
     void Start()
     {
@@ -40,6 +47,20 @@ public class FollowCam : MonoBehaviour
                       + (-targetTr.forward * distance)
                       + (Vector3.up * height);
 
+        // ※ 보간법 사용 시 주의점
+        // Lerp, Slerp 등 보간 함수에 인자를 넣을 때, 시작 좌표가 매번 달라지고 보간값이 고정이라면 선형적으로 보간되지 않는다. (처음에 빠르게 올라오다가 나중에 느려진다.)
+        // ① Start와 End를 좌표를 유니티에서 Object로 만들어 사용한다.
+        // ② 보간값을 시간에 따라서 변하도록 설정한다.
+        currentTime += Time.deltaTime;
+
+        if (currentTime >= lerpTime)
+        {
+            currentTime = lerpTime;
+        }
+
+        // camTr.position = Vector3.Lerp(startPosition.position, endPosition.position, currentTime / lerpTime);
+        // 이렇게 하면 우리가 원하는 선형적으로 보간하여 변하도록 설정할 수 있다.
+
         // 구면 선형 보간 함수(Slerp)를 사용해 부드럽게 위치를 변경
         // camTr.position = Vector3.Slerp(camTr.position,                  // 시작 위치
         //                                pos,                             // 목표 위치
@@ -47,9 +68,10 @@ public class FollowCam : MonoBehaviour
 
         // SmoothDamp을 이용한 위치 보간
         camTr.position = Vector3.SmoothDamp(camTr.position,                 // 시작 위치
-                                            pos,                            // 목표 위치
-                                            ref veloctiy,                   // 현재 속도
-                                            damping);                       // 목표 위치까지 도달할 시간
+                                         pos,                            // 목표 위치
+                                         ref veloctiy,                   // 현재 속도
+                                         damping);                       // 목표 위치까지 도달할 시간
+
         // Camera를 피벗 좌표를 향해 회전
         camTr.LookAt(targetTr.position + (targetTr.up * targetOffset));
     }
