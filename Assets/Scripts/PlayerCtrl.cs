@@ -12,7 +12,7 @@ public class PlayerCtrl : MonoBehaviour
     public float moveSpeed = 10.0f;
     public float turnSpeed = 80.0f;
 
-    void Start()
+    IEnumerator Start()
     {
         // 컴포넌트를 추출하여 변수에 대입
         tr = this.gameObject.GetComponent<Transform>(); // Generic : 데이터 타입(형)을 미리 정해놓는 것 <Transform>으로 Parameter()를 받는다.
@@ -21,6 +21,10 @@ public class PlayerCtrl : MonoBehaviour
 
         // 인스펙터 창에서 Play Automatically를 해제하고 스크립트에서 실행
         anim.Play("Idle");
+
+        turnSpeed = 0.0f;
+        yield return new WaitForSeconds(0.3f);
+        turnSpeed = 80.0f;
     }
 
     void Update()
