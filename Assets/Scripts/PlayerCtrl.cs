@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCtrl : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class PlayerCtrl : MonoBehaviour
     private readonly float initHp = 100.0f;
     // 현재 생명 값
     public float currHp;
+    // Hpbar를 연결할 변수
+    private Image hpBar;
 
     // 델리게이트 선언
     public delegate void PlayerDieHandler();
@@ -27,8 +30,11 @@ public class PlayerCtrl : MonoBehaviour
     // Start는 코루틴으로 실행 가능하다 -> 0.3f 대기하여 turnSpeed를 적용함으로써 처음 시작할 때 넘어온 마우스의 불규칙한 값(노이즈, 쓰레깃값)을 적용하지 않고 안정적인 값이 넘어올 때까지 대기했다가 로직 실행
     IEnumerator Start()
     {
+        // Hpbar 연결
+        hpBar = GameObject.FindGameObjectWithTag("HP_BAR")?.GetComponent<Image>();
         // HP 초기화
         currHp = initHp;
+        DisplayHealth();
          
         // 컴포넌트를 추출하여 변수에 대입
         tr = this.gameObject.GetComponent<Transform>(); // Generic : 데이터 타입(형)을 미리 정해놓는 것 <Transform>으로 Parameter()를 받는다.
@@ -105,6 +111,8 @@ public class PlayerCtrl : MonoBehaviour
         if (currHp >= 0.0f && coll.CompareTag("PUNCH"))
         {
             currHp -= 10.0f;
+            DisplayHealth();
+
             Debug.Log($"Player hp = {currHp / initHp}");
 
             // Player의 생명이 0 이하이면 사망 처리
@@ -136,5 +144,10 @@ public class PlayerCtrl : MonoBehaviour
 
         // 주인공 사망 이벤트 호출(발생)
         OnPlayerDie();
+    }
+
+    void DisplayHealth()
+    {
+        hpBar.fillAmount = currHp / initHp;
     }
 }

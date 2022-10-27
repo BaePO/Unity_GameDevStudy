@@ -23,6 +23,16 @@ public class DelegateDemo : MonoBehaviour
         float sum = sumHandler(10.0f, 5.0f);
         // 결괏값 출력
         Debug.Log($"Sum = {sum}");
+
+        // 델리게이트 변수에 람다식 선언
+        sumHandler = (float a, float b) => (a + b);
+        float sum2 = sumHandler(10.0f, 5.0f);
+        Debug.Log($"Sum2 = {sum2}");
+
+        // 델리게이트 변수에 무명 메서드 연결
+        sumHandler = delegate (float a, float b) { return a + b; };
+        float sum3 = sumHandler(2.0f, 3.0f);
+        Debug.Log($"Sum3 = {sum3}");
     }
 
 }
