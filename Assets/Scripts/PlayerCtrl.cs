@@ -15,7 +15,7 @@ public class PlayerCtrl : MonoBehaviour
     // 회전 속도 변수
     public float turnSpeed = 80.0f;
 
-    // 초기 생명 값
+    // 초기 생명 값`
     private readonly float initHp = 100.0f;
     // 현재 생명 값
     public float currHp;
@@ -144,6 +144,12 @@ public class PlayerCtrl : MonoBehaviour
 
         // 주인공 사망 이벤트 호출(발생)
         OnPlayerDie();
+
+        // 싱글턴 없이
+        // GameObject.Find("GameMgr").GetComponent<GameManager>().IsGameOver = true;
+
+        // GameManger를 싱글턴으로 지정
+        GameManager.instance.IsGameOver = true;
     }
 
     void DisplayHealth()
